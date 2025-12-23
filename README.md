@@ -280,12 +280,13 @@ Everyone from developers to executives can understand this.
 - [x] Core BLP checker
 - [x] Keyword-based analyzer
 - [x] In-memory label store
-- [ ] LLM-based semantic analyzer
-- [ ] Slack integration
-- [ ] Email integration
+- [x] LLM-based semantic analyzer (OpenAI, Anthropic, Ollama)
+- [x] Slack integration
+- [x] Email integration
+- [x] Declassification workflow (with expiration & revocation)
+- [x] Audit logging (in-memory & file backends)
+- [x] Interactive demo page
 - [ ] Persistent label store (Redis, PostgreSQL)
-- [ ] Declassification workflow
-- [ ] Audit logging
 - [ ] Multi-category labels (compartmentalization)
 
 ## References
