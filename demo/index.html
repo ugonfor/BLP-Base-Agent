@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clearance - AI Agent Security from 1973</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4;
+            --level-public: #22c55e;
+            --level-staff: #3b82f6;
+            --level-manager: #f59e0b;
+            --level-executive: #ef4444;
+            --glow-blue: rgba(59, 130, 246, 0.5);
+            --glow-red: rgba(239, 68, 68, 0.5);
+            --glow-green: rgba(34, 197, 94, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: var(--accent-purple);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px; height: 8px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 .year {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            box-shadow: 0 4px 20px var(--glow-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--glow-blue);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: var(--text-muted);
+            font-size: 2rem;
+        }
+
+        /* Section */
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Flow Comparison */
+        .flow-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .flow-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flow-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        }
+
+        .flow-card.danger::before {
+            background: linear-gradient(90deg, var(--accent-pink), var(--level-executive));
+        }
+
+        .flow-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flow-card .era {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: var(--text-secondary);
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flow-icon {
+            width: 60px; height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .flow-label { font-size: 0.75rem; color: var(--text-secondary); }
+        .flow-arrow { font-size: 1.5rem; color: var(--text-muted); }
+
+        .flow-lock {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .flow-lock .icon { font-size: 1.25rem; }
+        .flow-lock .label {
+            font-size: 0.625rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .flow-lock.secure .icon { color: var(--level-public); }
+        .flow-lock.secure .label { background: rgba(34, 197, 94, 0.2); color: var(--level-public); }
+        .flow-lock.danger .icon { color: var(--level-executive); }
+        .flow-lock.danger .label { background: rgba(239, 68, 68, 0.2); color: var(--level-executive); }
+
+        /* Demo Section */
+        .demo-section {
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .demo-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .demo-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .demo-dot.red { background: #ff5f57; }
+        .demo-dot.yellow { background: #febc2e; }
+        .demo-dot.green { background: #28c840; }
+
+        .demo-title {
+            margin-left: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .demo-content {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            min-height: 500px;
+        }
+
+        @media (max-width: 1024px) {
+            .demo-content { grid-template-columns: 1fr; }
+        }
+
+        /* Users Panel */
+        .users-panel {
+            background: var(--bg-primary);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+        }
+
+        .panel-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 0.5rem;
+            border: 2px solid transparent;
+        }
+
+        .user-card:hover { background: rgba(255, 255, 255, 0.05); }
+        .user-card.selected {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        .user-avatar {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-avatar.executive { background: linear-gradient(135deg, #dc2626, #991b1b); }
+        .user-avatar.manager { background: linear-gradient(135deg, #d97706, #92400e); }
+        .user-avatar.staff { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .user-avatar.public { background: linear-gradient(135deg, #16a34a, #15803d); }
+
+        .user-info h4 { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.25rem; }
+
+        .user-clearance {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .user-clearance.executive { background: rgba(239, 68, 68, 0.2); color: var(--level-executive); }
+        .user-clearance.manager { background: rgba(245, 158, 11, 0.2); color: var(--level-manager); }
+        .user-clearance.staff { background: rgba(59, 130, 246, 0.2); color: var(--level-staff); }
+        .user-clearance.public { background: rgba(34, 197, 94, 0.2); color: var(--level-public); }
+
+        /* Message Center */
+        .message-center {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .message-display {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .message-preview { width: 100%; max-width: 500px; }
+
+        .message-bubble {
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .message-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: var(--bg-tertiary);
+        }
+
+        .message-text { font-size: 1.125rem; line-height: 1.6; color: var(--text-primary); }
+
+        .message-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .message-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        .message-level.executive { background: rgba(239, 68, 68, 0.2); color: var(--level-executive); }
+        .message-level.manager { background: rgba(245, 158, 11, 0.2); color: var(--level-manager); }
+        .message-level.staff { background: rgba(59, 130, 246, 0.2); color: var(--level-staff); }
+        .message-level.public { background: rgba(34, 197, 94, 0.2); color: var(--level-public); }
+
+        .result-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 1rem;
+            animation: resultPop 0.4s ease-out;
+        }
+
+        .result-indicator.allowed {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .result-indicator.blocked {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .result-icon {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .result-indicator.allowed .result-icon {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--level-public);
+            animation: allowedPulse 0.6s ease-out;
+        }
+
+        .result-indicator.blocked .result-icon {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--level-executive);
+            animation: shake 0.5s ease-out;
+        }
+
+        .result-text { font-size: 1.25rem; font-weight: 700; }
+        .result-indicator.allowed .result-text { color: var(--level-public); }
+        .result-indicator.blocked .result-text { color: var(--level-executive); }
+
+        .result-reason {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .message-input-area {
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .preset-messages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .preset-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.8125rem;
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .preset-btn.executive { border-color: rgba(239, 68, 68, 0.3); }
+        .preset-btn.manager { border-color: rgba(245, 158, 11, 0.3); }
+        .preset-btn.staff { border-color: rgba(59, 130, 246, 0.3); }
+
+        .input-wrapper { display: flex; gap: 0.5rem; }
+
+        .message-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            font-size: 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .send-btn {
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px var(--glow-blue);
+        }
+
+        /* Viz Panel */
+        .viz-panel {
+            background: var(--bg-primary);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+        }
+
+        .security-tower {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .tower-level {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tower-level::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+        }
+
+        .tower-level.executive::before { background: var(--level-executive); }
+        .tower-level.manager::before { background: var(--level-manager); }
+        .tower-level.staff::before { background: var(--level-staff); }
+        .tower-level.public::before { background: var(--level-public); }
+
+        .tower-level.active { transform: scale(1.02); }
+        .tower-level.active.executive { border-color: var(--level-executive); box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+        .tower-level.active.manager { border-color: var(--level-manager); box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+        .tower-level.active.staff { border-color: var(--level-staff); box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+        .tower-level.active.public { border-color: var(--level-public); box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+
+        .tower-level.blocked { opacity: 0.4; }
+        .tower-level.recipient { border-style: dashed; }
+
+        .level-number {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .tower-level.executive .level-number { background: rgba(239, 68, 68, 0.2); color: var(--level-executive); }
+        .tower-level.manager .level-number { background: rgba(245, 158, 11, 0.2); color: var(--level-manager); }
+        .tower-level.staff .level-number { background: rgba(59, 130, 246, 0.2); color: var(--level-staff); }
+        .tower-level.public .level-number { background: rgba(34, 197, 94, 0.2); color: var(--level-public); }
+
+        .level-info { flex: 1; }
+        .level-name { font-weight: 600; font-size: 0.875rem; }
+        .level-desc { font-size: 0.75rem; color: var(--text-muted); }
+        .level-indicator { font-size: 1.25rem; }
+
+        .blp-rules {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .blp-rules h4 {
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rule {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rule:last-child { border-bottom: none; }
+
+        .rule-icon {
+            width: 24px; height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .rule-icon.up { background: rgba(239, 68, 68, 0.2); color: var(--level-executive); }
+        .rule-icon.down { background: rgba(34, 197, 94, 0.2); color: var(--level-public); }
+
+        .rule-text { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5; }
+        .rule-text strong { color: var(--text-primary); }
+
+        /* Code Section */
+        .code-block {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .code-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .code-copy {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .code-copy:hover { background: rgba(255, 255, 255, 0.15); color: var(--text-primary); }
+
+        .code-content { padding: 1.5rem; overflow-x: auto; }
+
+        .code-content pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .code-content .keyword { color: var(--accent-purple); }
+        .code-content .function { color: var(--accent-blue); }
+        .code-content .string { color: var(--level-public); }
+        .code-content .comment { color: var(--text-muted); }
+        .code-content .constant { color: var(--accent-pink); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-tagline { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+
+        .footer-tagline .gradient-text {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover { color: var(--text-primary); }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        @keyframes resultPop {
+            0% { opacity: 0; transform: scale(0.9); }
+            50% { transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        @keyframes allowedPulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .demo-content { grid-template-columns: 1fr; }
+            .users-panel, .viz-panel { border: none; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+            .flow-comparison { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-gradient"></div>
+
+    <section class="hero">
+        <div class="hero-badge"><span>Bell-LaPadula Model</span></div>
+        <h1>
+            <span class="gradient-text">AI Agent Security?</span><br>
+            The answer was in <span class="year">1973</span>.
+        </h1>
+        <p class="hero-subtitle">
+            You locked your documents. But when AI agents read them and talk to each other...
+            <strong>where's the security?</strong>
+        </p>
+        <div class="hero-cta">
+            <a href="#demo" class="btn btn-primary">Try Live Demo &rarr;</a>
+            <a href="https://github.com" class="btn btn-secondary">View on GitHub</a>
+        </div>
+        <div class="scroll-indicator">&darr;</div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>The Problem</h2>
+                <p>Documents have ACLs. Agent conversations don't.</p>
+            </div>
+            <div class="flow-comparison">
+                <div class="flow-card">
+                    <h3>The Past <span class="era">Pre-AI</span></h3>
+                    <div class="flow-diagram">
+                        <div class="flow-node"><div class="flow-icon">&#128196;</div><span class="flow-label">Document</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-lock secure"><span class="icon">&#128274;</span><span class="label">ACL</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-node"><div class="flow-icon">&#128100;</div><span class="flow-label">Human</span></div>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; text-align: center;">Documents protected. &#10003;</p>
+                </div>
+                <div class="flow-card danger">
+                    <h3>Now <span class="era">AI Era</span></h3>
+                    <div class="flow-diagram">
+                        <div class="flow-node"><div class="flow-icon">&#128196;</div><span class="flow-label">Document</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-node"><div class="flow-icon">&#129302;</div><span class="flow-label">Agent</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-lock danger"><span class="icon">&#9888;</span><span class="label">???</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-node"><div class="flow-icon">&#129302;</div><span class="flow-label">Agent</span></div>
+                        <div class="flow-arrow">&rarr;</div>
+                        <div class="flow-node"><div class="flow-icon">&#128100;</div><span class="flow-label">Human</span></div>
+                    </div>
+                    <p style="color: var(--level-executive); font-size: 0.875rem; text-align: center;">Conversations unprotected. &#10007;</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="demo">
+        <div class="container">
+            <div class="section-header">
+                <h2>Try It Yourself</h2>
+                <p>Select a recipient and send a message. Watch BLP in action.</p>
+            </div>
+            <div class="demo-section">
+                <div class="demo-header">
+                    <span class="demo-dot red"></span>
+                    <span class="demo-dot yellow"></span>
+                    <span class="demo-dot green"></span>
+                    <span class="demo-title">clearance_demo.py</span>
+                </div>
+                <div class="demo-content">
+                    <div class="users-panel">
+                        <div class="panel-title">Select Recipient</div>
+                        <div class="user-card selected" data-clearance="3" data-name="CEO Kim">
+                            <div class="user-avatar executive">CEO</div>
+                            <div class="user-info"><h4>CEO Kim</h4><span class="user-clearance executive">EXECUTIVE</span></div>
+                        </div>
+                        <div class="user-card" data-clearance="2" data-name="Manager Lee">
+                            <div class="user-avatar manager">ML</div>
+                            <div class="user-info"><h4>Manager Lee</h4><span class="user-clearance manager">MANAGER</span></div>
+                        </div>
+                        <div class="user-card" data-clearance="1" data-name="Staff Park">
+                            <div class="user-avatar staff">SP</div>
+                            <div class="user-info"><h4>Staff Park</h4><span class="user-clearance staff">STAFF</span></div>
+                        </div>
+                        <div class="user-card" data-clearance="0" data-name="External User">
+                            <div class="user-avatar public">EX</div>
+                            <div class="user-info"><h4>External User</h4><span class="user-clearance public">PUBLIC</span></div>
+                        </div>
+                    </div>
+                    <div class="message-center">
+                        <div class="message-display">
+                            <div class="message-preview">
+                                <div class="message-bubble">
+                                    <div class="message-text" id="messageText">Q3 revenue exceeded our expectations by 20%</div>
+                                    <div class="message-meta">Contains: <span class="message-level executive" id="messageLevel">EXECUTIVE</span> info</div>
+                                </div>
+                                <div class="result-indicator allowed" id="resultIndicator">
+                                    <div class="result-icon">&#10003;</div>
+                                    <div class="result-text">MESSAGE ALLOWED</div>
+                                    <div class="result-reason">CEO Kim has EXECUTIVE clearance and can receive EXECUTIVE level information.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-input-area">
+                            <div class="preset-messages">
+                                <button class="preset-btn executive" data-message="Q3 revenue exceeded expectations" data-level="3">&#128176; Revenue Info</button>
+                                <button class="preset-btn executive" data-message="Acquisition target valued at $50M" data-level="3">&#129309; Acquisition</button>
+                                <button class="preset-btn manager" data-message="Review the budget proposal" data-level="2">&#128200; Budget</button>
+                                <button class="preset-btn manager" data-message="Salary adjustments pending" data-level="2">&#128181; Salary</button>
+                                <button class="preset-btn staff" data-message="Internal meeting tomorrow" data-level="1">&#128226; Internal</button>
+                                <button class="preset-btn" data-message="Hello, how are you?" data-level="0">&#128075; Public</button>
+                            </div>
+                            <div class="input-wrapper">
+                                <input type="text" class="message-input" id="customMessage" placeholder="Or type your own message...">
+                                <button class="send-btn" id="sendBtn">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="viz-panel">
+                        <div class="panel-title">Security Levels</div>
+                        <div class="security-tower">
+                            <div class="tower-level executive active" data-level="3">
+                                <div class="level-number">3</div>
+                                <div class="level-info"><div class="level-name">EXECUTIVE</div><div class="level-desc">C-suite only</div></div>
+                                <span class="level-indicator" id="execIndicator">&#128232;</span>
+                            </div>
+                            <div class="tower-level manager" data-level="2">
+                                <div class="level-number">2</div>
+                                <div class="level-info"><div class="level-name">MANAGER</div><div class="level-desc">Management</div></div>
+                                <span class="level-indicator" id="mgrIndicator"></span>
+                            </div>
+                            <div class="tower-level staff" data-level="1">
+                                <div class="level-number">1</div>
+                                <div class="level-info"><div class="level-name">STAFF</div><div class="level-desc">Employees</div></div>
+                                <span class="level-indicator" id="staffIndicator"></span>
+                            </div>
+                            <div class="tower-level public" data-level="0">
+                                <div class="level-number">0</div>
+                                <div class="level-info"><div class="level-name">PUBLIC</div><div class="level-desc">Anyone</div></div>
+                                <span class="level-indicator" id="publicIndicator"></span>
+                            </div>
+                        </div>
+                        <div class="blp-rules">
+                            <h4>&#128274; Bell-LaPadula Rules</h4>
+                            <div class="rule">
+                                <div class="rule-icon up">&uarr;</div>
+                                <div class="rule-text"><strong>No Read Up</strong><br>Can't read above your clearance</div>
+                            </div>
+                            <div class="rule">
+                                <div class="rule-icon down">&darr;</div>
+                                <div class="rule-text"><strong>No Write Down</strong><br>Can't send info to lower clearance</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>3 Lines. That's It.</h2>
+                <p>Add BLP security to your AI agents in seconds.</p>
+            </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-filename">example.py</span>
+                    <button class="code-copy" onclick="copyCode()">Copy</button>
+                </div>
+                <div class="code-content">
+                    <pre><code><span class="keyword">from</span> clearance.checker <span class="keyword">import</span> create_checker
+<span class="keyword">from</span> clearance <span class="keyword">import</span> SecurityLevel, User
+
+<span class="comment"># Setup with security keywords</span>
+checker = <span class="function">create_checker</span>({
+    <span class="string">"revenue"</span>: SecurityLevel.<span class="constant">EXECUTIVE</span>,
+    <span class="string">"salary"</span>: SecurityLevel.<span class="constant">MANAGER</span>,
+})
+
+<span class="comment"># Check before sending</span>
+staff = <span class="function">User</span>(<span class="string">"u1"</span>, <span class="string">"Alice"</span>, SecurityLevel.<span class="constant">STAFF</span>)
+result = checker.<span class="function">check_write</span>(<span class="string">"Q3 revenue is $10M"</span>, staff)
+
+<span class="keyword">if</span> <span class="keyword">not</span> result.allowed:
+    <span class="function">print</span>(<span class="string">f"Blocked: {result.violation}"</span>)  <span class="comment"># NO_WRITE_DOWN</span></code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-tagline"><span class="gradient-text">Don't reinvent security.</span> Use what works.</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">Based on the Bell-LaPadula Model (1973) - 50 years of proven security.</p>
+            <div class="footer-links">
+                <a href="#">GitHub</a>
+                <a href="#">Documentation</a>
+                <a href="#">PyPI</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const securityKeywords = {'revenue':3,'profit':3,'acquisition':3,'merger':3,'valuation':3,'investor':3,'budget':2,'salary':2,'headcount':2,'promotion':2,'confidential':2,'internal':1,'team only':1};
+        const levelNames = ['PUBLIC','STAFF','MANAGER','EXECUTIVE'];
+        const levelClasses = ['public','staff','manager','executive'];
+        let selectedRecipient = {clearance:3,name:'CEO Kim'};
+        let currentMessageLevel = 3;
+        const userCards = document.querySelectorAll('.user-card');
+        const messageText = document.getElementById('messageText');
+        const messageLevel = document.getElementById('messageLevel');
+        const resultIndicator = document.getElementById('resultIndicator');
+        const customMessage = document.getElementById('customMessage');
+        const sendBtn = document.getElementById('sendBtn');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+        const towerLevels = document.querySelectorAll('.tower-level');
+
+        function analyzeMessage(msg){let m=msg.toLowerCase(),max=0;for(const[k,l]of Object.entries(securityKeywords))if(m.includes(k))max=Math.max(max,l);return max;}
+
+        function updateVisualization(ml,rc){
+            towerLevels.forEach(lv=>{const l=parseInt(lv.dataset.level);lv.classList.remove('active','blocked','recipient');if(l===ml)lv.classList.add('active');if(l<ml&&l<=rc)lv.classList.add('blocked');if(l===rc)lv.classList.add('recipient');});
+            document.getElementById('execIndicator').textContent=ml===3?'&#128232;':'';
+            document.getElementById('mgrIndicator').textContent=ml===2?'&#128232;':'';
+            document.getElementById('staffIndicator').textContent=ml===1?'&#128232;':'';
+            document.getElementById('publicIndicator').textContent=ml===0?'&#128232;':'';
+        }
+
+        function updateResult(msg,ml,rcp){
+            const allowed=ml<=rcp.clearance;
+            messageText.textContent=msg;
+            messageLevel.textContent=levelNames[ml];
+            messageLevel.className='message-level '+levelClasses[ml];
+            resultIndicator.className='result-indicator '+(allowed?'allowed':'blocked');
+            const icon=resultIndicator.querySelector('.result-icon');
+            const text=resultIndicator.querySelector('.result-text');
+            const reason=resultIndicator.querySelector('.result-reason');
+            if(allowed){icon.innerHTML='&#10003;';text.textContent='MESSAGE ALLOWED';reason.textContent=`${rcp.name} has ${levelNames[rcp.clearance]} clearance and can receive ${levelNames[ml]} level information.`;}
+            else{icon.innerHTML='&#10007;';text.textContent='MESSAGE BLOCKED';reason.textContent=`NO WRITE DOWN: ${levelNames[ml]} information cannot be sent to ${rcp.name} who only has ${levelNames[rcp.clearance]} clearance.`;}
+            updateVisualization(ml,rcp.clearance);
+            resultIndicator.style.animation='none';resultIndicator.offsetHeight;resultIndicator.style.animation='resultPop 0.4s ease-out';
+        }
+
+        userCards.forEach(c=>c.addEventListener('click',()=>{userCards.forEach(x=>x.classList.remove('selected'));c.classList.add('selected');selectedRecipient={clearance:parseInt(c.dataset.clearance),name:c.dataset.name};updateResult(messageText.textContent,currentMessageLevel,selectedRecipient);}));
+        presetBtns.forEach(b=>b.addEventListener('click',()=>{const msg=b.dataset.message;const lv=parseInt(b.dataset.level);currentMessageLevel=lv;customMessage.value=msg;updateResult(msg,lv,selectedRecipient);}));
+
+        function sendMessage(){const msg=customMessage.value.trim();if(msg){currentMessageLevel=analyzeMessage(msg);updateResult(msg,currentMessageLevel,selectedRecipient);}}
+        sendBtn.addEventListener('click',sendMessage);
+        customMessage.addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage();});
+        customMessage.addEventListener('input',e=>{const msg=e.target.value;if(msg.trim()){const lv=analyzeMessage(msg);messageLevel.textContent=levelNames[lv];messageLevel.className='message-level '+levelClasses[lv];}});
+
+        function copyCode(){const code=`from clearance.checker import create_checker
+from clearance import SecurityLevel, User
+
+checker = create_checker({
+    "revenue": SecurityLevel.EXECUTIVE,
+    "salary": SecurityLevel.MANAGER,
+})
+
+staff = User("u1", "Alice", SecurityLevel.STAFF)
+result = checker.check_write("Q3 revenue is $10M", staff)
+
+if not result.allowed:
+    print(f"Blocked: {result.violation}")`;
+            navigator.clipboard.writeText(code).then(()=>{const btn=document.querySelector('.code-copy');btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);});
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}));
+        updateResult('Q3 revenue exceeded our expectations by 20%',3,selectedRecipient);
+    </script>
+</body>
+</html>
