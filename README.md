@@ -52,6 +52,28 @@ print(result.allowed)  # True - Executive can receive executive info
 
 **That's it.** Three lines to add BLP security to your agent communications.
 
+## Try the Demo
+
+Interactive demo to see BLP in action:
+
+```bash
+# Clone and run
+git clone https://github.com/your-repo/clearance.git
+cd clearance
+
+# Option 1: Open directly in browser
+open demo/index.html
+
+# Option 2: Run local server
+python -m http.server 8080
+# Then visit http://localhost:8080/demo/
+```
+
+The demo lets you:
+- Select recipients with different clearance levels (CEO, Manager, Staff, External)
+- Send messages with security-sensitive keywords
+- Watch BLP block or allow in real-time
+
 ## How It Works
 
 ### The Bell-LaPadula Model (1973)
