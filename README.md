@@ -54,25 +54,37 @@ print(result.allowed)  # True - Executive can receive executive info
 
 ## Try the Demo
 
-Interactive demo to see BLP in action:
+### Option 1: Interactive Multi-Agent Demo (Recommended)
+
+Full-featured demo with multiple AI agents communicating:
 
 ```bash
-# Clone and run
-git clone https://github.com/your-repo/clearance.git
-cd clearance
+# Install demo dependencies
+pip install clearance[demo]
 
-# Option 1: Open directly in browser
-open demo/index.html
-
-# Option 2: Run local server
-python -m http.server 8080
-# Then visit http://localhost:8080/demo/
+# Run the Streamlit app
+streamlit run demo/streamlit_app.py
 ```
 
-The demo lets you:
-- Select recipients with different clearance levels (CEO, Manager, Staff, External)
-- Send messages with security-sensitive keywords
-- Watch BLP block or allow in real-time
+**Features:**
+- 6 agents with different clearance levels (CEO, CFO, Manager, HR, Staff, Intern)
+- Pre-built attack scenarios (acquisition leak, salary info, prompt injection)
+- Free chat mode - send any message between any agents
+- Real-time BLP enforcement visualization
+- Security analysis matrix
+
+### Option 2: Static HTML Demo
+
+Quick demo without installation:
+
+```bash
+# Open directly in browser
+open demo/index.html
+
+# Or run local server
+python -m http.server 8080
+# Visit http://localhost:8080/demo/
+```
 
 ## How It Works
 
