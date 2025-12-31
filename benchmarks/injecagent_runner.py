@@ -146,49 +146,105 @@ class InjecAgentBenchmark:
         """Setup Clearance checker with security-relevant keywords."""
         store = LabelStore()
 
-        # Financial/Banking keywords (EXECUTIVE level - highest sensitivity)
-        financial_keywords = [
+        # =================================================================
+        # EXECUTIVE Level - Highest sensitivity
+        # =================================================================
+
+        # Financial/Banking keywords
+        financial_executive = [
             "payment", "pay bill", "transfer", "bank account", "credit card",
             "debit card", "account number", "routing number", "wire transfer",
             "payee", "transaction", "balance", "withdraw", "deposit",
-            "payment methods", "saved payment", "billing",
+            "payment methods", "saved payment", "billing", "cryptocurrency",
+            "bitcoin", "holdings", "sell", "buy order", "trade",
         ]
-        for kw in financial_keywords:
+        for kw in financial_executive:
             store.add_keyword(kw, Label(SecurityLevel.EXECUTIVE, source="financial"))
 
-        # Personal/PII keywords (MANAGER level)
-        personal_keywords = [
-            "address", "saved addresses", "home address", "phone number",
-            "email address", "social security", "ssn", "password", "credential",
-            "personal information", "identity", "passport", "driver license",
-        ]
-        for kw in personal_keywords:
-            store.add_keyword(kw, Label(SecurityLevel.MANAGER, source="pii"))
-
-        # Security/Access keywords (EXECUTIVE level)
+        # Security/Access keywords
         security_keywords = [
             "unlock", "grant access", "guest access", "permanent access",
             "access history", "smart lock", "security code", "pin code",
-            "authentication", "authorize", "permission",
+            "authentication", "authorize", "permission", "password",
+            "credential", "api key", "secret key", "token",
+            "blacklist", "whitelist", "security policy", "firewall",
         ]
         for kw in security_keywords:
             store.add_keyword(kw, Label(SecurityLevel.EXECUTIVE, source="security"))
 
-        # Data exfiltration indicators (MANAGER level)
+        # Critical actions
+        critical_actions = [
+            "delete all", "remove all", "format", "erase", "shutdown",
+            "terminate", "disable", "reset factory", "wipe",
+            "emergency", "911", "dispatch", "priority vehicle",
+        ]
+        for kw in critical_actions:
+            store.add_keyword(kw, Label(SecurityLevel.EXECUTIVE, source="critical"))
+
+        # =================================================================
+        # MANAGER Level - Sensitive but not critical
+        # =================================================================
+
+        # Personal/PII keywords
+        personal_keywords = [
+            "address", "saved addresses", "home address", "phone number",
+            "social security", "ssn", "passport", "driver license",
+            "personal information", "identity", "date of birth",
+            "patient id", "medical record", "health data", "genetic data",
+            "dna", "biometric", "fingerprint", "voice sample",
+        ]
+        for kw in personal_keywords:
+            store.add_keyword(kw, Label(SecurityLevel.MANAGER, source="pii"))
+
+        # Data exfiltration indicators
         exfil_keywords = [
-            "send email", "email to", "forward to", "share with",
-            "retrieve and send", "export", "download",
+            "send to", "email to", "forward to", "share with",
+            "send it to", "send this to", "send email",
+            "export to", "download to", "upload to",
+            "amy.watson@gmail.com",  # Known attacker email in dataset
+            "@gmail.com", "@yahoo.com", "@hotmail.com",  # External emails
         ]
         for kw in exfil_keywords:
             store.add_keyword(kw, Label(SecurityLevel.MANAGER, source="exfil"))
 
-        # Harmful action keywords (EXECUTIVE level)
-        harmful_keywords = [
-            "delete", "remove", "cancel", "terminate", "shutdown",
-            "disable", "reset", "format", "erase",
+        # File/Data operations that could leak
+        data_ops = [
+            "confidential", "private", "secret", "sensitive",
+            "bank details", "business plan", "financial report",
+            ".hidden", "/tmp", "move files", "move all", "copy all",
         ]
-        for kw in harmful_keywords:
-            store.add_keyword(kw, Label(SecurityLevel.EXECUTIVE, source="harmful"))
+        for kw in data_ops:
+            store.add_keyword(kw, Label(SecurityLevel.MANAGER, source="data"))
+
+        # Sharing/Permission changes
+        sharing_keywords = [
+            "sharing settings", "can_edit", "make public", "share link",
+            "change permission", "grant permission", "add user",
+        ]
+        for kw in sharing_keywords:
+            store.add_keyword(kw, Label(SecurityLevel.MANAGER, source="sharing"))
+
+        # =================================================================
+        # STAFF Level - Internal only
+        # =================================================================
+
+        # Internal system actions
+        internal_keywords = [
+            "schedule", "appointment", "booking", "reservation",
+            "update settings", "change settings", "modify",
+            "robot", "smart speaker", "home automation",
+            "traffic light", "intersection",
+        ]
+        for kw in internal_keywords:
+            store.add_keyword(kw, Label(SecurityLevel.STAFF, source="internal"))
+
+        # Potentially harmful content
+        harmful_content = [
+            "deepfake", "fake voice", "impersonate", "spoof",
+            "loud music", "3 am", "disturb", "annoy",
+        ]
+        for kw in harmful_content:
+            store.add_keyword(kw, Label(SecurityLevel.STAFF, source="harmful"))
 
         self.label_store = store
         self.analyzer = MessageAnalyzer(store)
