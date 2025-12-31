@@ -176,34 +176,39 @@ result = checker.check_write(
 
 ## Benchmarks
 
-Tested against security research benchmarks:
+### InjecAgent Benchmark (1,054 test cases)
 
-| Benchmark | Inspired By | Result |
-|-----------|-------------|--------|
-| MASLEAK | Multi-agent IP leakage (87% attack success in wild) | ✅ 100% blocked |
-| InjecAgent | Indirect prompt injection | ✅ 100% blocked |
-| AgentDojo | Data flow attacks | ✅ 100% blocked |
+Tested against [InjecAgent](https://arxiv.org/abs/2403.02691) - the first benchmark for indirect prompt injection attacks on tool-integrated LLM agents.
+
+| Defense | Baseline ASR | Defended ASR | Reduction |
+|---------|--------------|--------------|-----------|
+| No Defense (GPT-4) | 24.0% | 24.0% | 0% |
+| GPT-4 Fine-tuned | 24.0% | 7.1% | 70.4% |
+| **Clearance** | 24.0% | **11.6%** | **51.6%** |
 
 ```bash
-pytest tests/test_benchmark.py -v
-# 32 passed
+python benchmarks/injecagent_runner.py
+# Block Rate: 51.6% | ASR: 24% → 11.6%
 ```
+
+### Comparison with State-of-the-Art
+
+| Defense | Type | ASR Reduction | Utility | Notes |
+|---------|------|---------------|---------|-------|
+| FIDES (Microsoft) | IFC | 100% | 94% | Complex, requires policy |
+| Progent | Filtering | 89.6% | - | Autonomous mode |
+| DataFilter | Filtering | 98.4% | 98% | Custom benchmark |
+| **Clearance** | IFC (BLP) | **51.6%** | **100%** | Simple, framework-agnostic |
+| Spotlighting | Prompt Eng. | 96% | 98% | ⚠️ Bypassed by adaptive attacks |
+| Sandwich | Prompt Eng. | 42% | 66% | ⚠️ Bypassed by adaptive attacks |
+
+**Key Insight**: Prompt engineering defenses show good initial results but are [vulnerable to adaptive attacks (>95% ASR)](https://arxiv.org/abs/2503.00061). Clearance uses content-based detection, not prompt-level, making it more robust to such attacks.
 
 <details>
-<summary>Full benchmark results</summary>
+<summary>Run full comparison</summary>
 
-```
-CLEARANCE BENCHMARK RESULTS
-═══════════════════════════════════════════
-
-Total Cases: 24
-Passed: 24 (100.0%)
-
-Detection Matrix:
-  ✅ True Positives (attacks blocked):  14
-  ✅ True Negatives (benign allowed):   10
-  ❌ False Positives: 0
-  ❌ False Negatives: 0
+```bash
+python benchmarks/comparison.py
 ```
 
 </details>
