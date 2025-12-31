@@ -5,17 +5,29 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "clearance"
 version = "0.1.0"
-description = "Bell-LaPadula model-based information flow control for AI agent communications"
+description = "Stop your AI agents from leaking secrets. Information flow control for multi-agent systems."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.9"
 authors = [
     {name = "Clearance Contributors"}
 ]
-keywords = ["security", "blp", "bell-lapadula", "ai-agents", "information-flow-control"]
+keywords = [
+    "llm-security",
+    "ai-agents",
+    "multi-agent",
+    "prompt-injection",
+    "information-flow-control",
+    "bell-lapadula",
+    "agent-security",
+    "langchain",
+    "crewai",
+    "autogen",
+]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -23,6 +35,8 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Security",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
 ]
 
 dependencies = []
